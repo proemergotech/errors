@@ -1,0 +1,28 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - build
+
+test:
+  stage: build
+  image: golang:1.14
+  script:
+    - go test -mod=readonly -race -v ./...
+
+verify:
+  stage: build
+  script:
+    - apk update && apk add git
+    - ./verify.sh
+  only:
+    - branches
+  except:
+    - master
+
+build:
+  stage: build
+  image: golang:1.14
+  script:
+    - go build -a -mod=readonly -o /dev/null ./...

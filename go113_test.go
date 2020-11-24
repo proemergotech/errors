@@ -63,6 +63,7 @@ func TestIs(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Is(tt.args.err, tt.args.target); got != tt.want {
 				t.Errorf("Is() = %v, want %v", got, tt.want)
@@ -123,6 +124,7 @@ func TestAs(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			if got := As(tt.args.err, tt.args.target); got != tt.want {
 				t.Errorf("As() = %v, want %v", got, tt.want)
@@ -169,6 +171,7 @@ func TestUnwrap(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			if err := Unwrap(tt.args.err); !reflect.DeepEqual(err, tt.want) {
 				t.Errorf("Unwrap() error = %v, want %v", err, tt.want)

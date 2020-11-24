@@ -5,7 +5,6 @@ import (
 	"io"
 	"path"
 	"runtime"
-	"strconv"
 	"strings"
 )
 
@@ -40,15 +39,6 @@ func (f Frame) line() int {
 	return line
 }
 
-// name returns the name of this function, if known.
-func (f Frame) name() string {
-	fn := runtime.FuncForPC(f.pc())
-	if fn == nil {
-		return "unknown"
-	}
-	return fn.Name()
-}
-
 // Format formats the frame according to the fmt.Formatter interface.
 //
 //    %s    source file
@@ -59,38 +49,34 @@ func (f Frame) name() string {
 // Format accepts flags that alter the printing of some verbs, as follows:
 //
 //    %+s   function name and path of source file relative to the compile time
-//          GOPATH separated by \n\t (<funcname>\n\t<path>)
+//          GOPATH separated by \n\t (<funcName>\n\t<path>)
 //    %+v   equivalent to %+s:%d
 func (f Frame) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 's':
 		switch {
 		case s.Flag('+'):
-			io.WriteString(s, f.name())
-			io.WriteString(s, "\n\t")
-			io.WriteString(s, f.file())
+			pc := f.pc()
+			fn := runtime.FuncForPC(pc)
+			if fn == nil {
+				_, _ = io.WriteString(s, "unknown")
+			} else {
+				file, _ := fn.FileLine(pc)
+				_, _ = fmt.Fprintf(s, "%s\n\t%s", fn.Name(), file)
+			}
 		default:
-			io.WriteString(s, path.Base(f.file()))
+			_, _ = io.WriteString(s, path.Base(f.file()))
 		}
 	case 'd':
-		io.WriteString(s, strconv.Itoa(f.line()))
+		_, _ = fmt.Fprintf(s, "%d", f.line())
 	case 'n':
-		io.WriteString(s, funcname(f.name()))
+		name := runtime.FuncForPC(f.pc()).Name()
+		_, _ = io.WriteString(s, funcName(name))
 	case 'v':
 		f.Format(s, 's')
-		io.WriteString(s, ":")
+		_, _ = io.WriteString(s, ":")
 		f.Format(s, 'd')
 	}
-}
-
-// MarshalText formats a stacktrace Frame as a text string. The output is the
-// same as that of fmt.Sprintf("%+v", f), but without newlines or tabs.
-func (f Frame) MarshalText() ([]byte, error) {
-	name := f.name()
-	if name == "unknown" {
-		return []byte(name), nil
-	}
-	return []byte(fmt.Sprintf("%s %s:%d", name, f.file(), f.line())), nil
 }
 
 // StackTrace is stack of Frames from innermost (newest) to outermost (oldest).
@@ -110,30 +96,16 @@ func (st StackTrace) Format(s fmt.State, verb rune) {
 		switch {
 		case s.Flag('+'):
 			for _, f := range st {
-				io.WriteString(s, "\n")
-				f.Format(s, verb)
+				_, _ = fmt.Fprintf(s, "\n%+v", f)
 			}
 		case s.Flag('#'):
-			fmt.Fprintf(s, "%#v", []Frame(st))
+			_, _ = fmt.Fprintf(s, "%#v", []Frame(st))
 		default:
-			st.formatSlice(s, verb)
+			_, _ = fmt.Fprintf(s, "%v", []Frame(st))
 		}
 	case 's':
-		st.formatSlice(s, verb)
+		_, _ = fmt.Fprintf(s, "%s", []Frame(st))
 	}
-}
-
-// formatSlice will format this StackTrace into the given buffer as a slice of
-// Frame, only valid when called with '%s' or '%v'.
-func (st StackTrace) formatSlice(s fmt.State, verb rune) {
-	io.WriteString(s, "[")
-	for i, f := range st {
-		if i > 0 {
-			io.WriteString(s, " ")
-		}
-		f.Format(s, verb)
-	}
-	io.WriteString(s, "]")
 }
 
 // stack represents a stack of program counters.
@@ -146,7 +118,7 @@ func (s *stack) Format(st fmt.State, verb rune) {
 		case st.Flag('+'):
 			for _, pc := range *s {
 				f := Frame(pc)
-				fmt.Fprintf(st, "\n%+v", f)
+				_, _ = fmt.Fprintf(st, "\n%+v", f)
 			}
 		}
 	}
@@ -168,8 +140,8 @@ func callers() *stack {
 	return &st
 }
 
-// funcname removes the path prefix component of a function's name reported by func.Name().
-func funcname(name string) string {
+// funcName removes the path prefix component of a function's name reported by func.Name().
+func funcName(name string) string {
 	i := strings.LastIndex(name, "/")
 	name = name[i+1:]
 	i = strings.Index(name, ".")

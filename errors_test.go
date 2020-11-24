@@ -1,7 +1,7 @@
 package errors
 
 import (
-	"errors"
+	stderrors "errors"
 	"fmt"
 	"io"
 	"reflect"
@@ -16,7 +16,7 @@ func TestNew(t *testing.T) {
 		{"", fmt.Errorf("")},
 		{"foo", fmt.Errorf("foo")},
 		{"foo", New("foo")},
-		{"string with format specifiers: %v", errors.New("string with format specifiers: %v")},
+		{"string with format specifiers: %v", stderrors.New("string with format specifiers: %v")},
 	}
 
 	for _, tt := range tests {
@@ -232,7 +232,7 @@ func TestErrorEquality(t *testing.T) {
 	vals := []error{
 		nil,
 		io.EOF,
-		errors.New("EOF"),
+		stderrors.New("EOF"),
 		New("EOF"),
 		Errorf("EOF"),
 		Wrap(io.EOF, "EOF"),

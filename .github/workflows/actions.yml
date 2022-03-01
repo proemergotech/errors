@@ -6,11 +6,12 @@ jobs:
     container: golang:1.17
     steps:
       - uses: actions/checkout@v2
+
       - run: go test -mod=readonly -race -v ./...
 
   lint:
     runs-on: ubuntu-latest
-    container: golangci/golangci-lint:v1.32.2-alpine
+    container: golangci/golangci-lint:v1.39-alpine
     steps:
       - uses: actions/checkout@v2
       
@@ -24,3 +25,21 @@ jobs:
         with:
           name: code-quality
           path: gl-code-quality-report.json
+          
+  verify:
+    if: github.ref_name != master
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        
+      - run: |
+          apk update && apk add git
+          ./verify.sh
+          
+  build:
+    runs-on: ubuntu-latest
+    container: golang:1.17
+    steps:
+      - uses: actions/checkout@v2
+        
+      - run: go build -a -mod=readonly -o /dev/null ./...

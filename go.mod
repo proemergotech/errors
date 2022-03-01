@@ -1,3 +1,3 @@
-module gitlab.com/proemergotech/errors
+module github.com/proemergotech/errors
 
-go 1.15
+go 1.17

@@ -7,3 +7,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: go test -mod=readonly -race -v ./...
+
+  lint:
+    runs-on: ubuntu-latest
+    container: golangci/golangci-lint:v1.32.2-alpine
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Run lint
+        run: |
+          apk --no-cache add git jq
+          golangci-lint run -v --timeout 2m --out-format code-climate -c .golangci.yml | tee gl-code-quality-report.json | jq -r '.[] | "\(.location.path):\(.location.lines.begin) \(.description)"'
+      
+      - name: Store report
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-quality
+          path: gl-code-quality-report.json

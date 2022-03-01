@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v2
         
       - run: |
-          apk update && apk add git
+          apt update && apt install -y git
           ./verify.sh
           
   build:

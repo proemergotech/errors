@@ -32,9 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         
-      - run: |
-          apt update && apt install -y git
-          ./verify.sh
+      - run: ./verify.sh
           
   build:
     runs-on: ubuntu-latest

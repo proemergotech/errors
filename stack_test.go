@@ -32,7 +32,7 @@ func TestFrameFormat(t *testing.T) {
 	}, {
 		initpc,
 		"%+s",
-		"github.com/proemergotech/errors.init\n" +
+		"github.com/proemergotech/errors/v2.init\n" +
 			"\t.+/errors/stack_test.go",
 	}, {
 		0,
@@ -79,7 +79,7 @@ func TestFrameFormat(t *testing.T) {
 	}, {
 		initpc,
 		"%+v",
-		"github.com/proemergotech/errors.init\n" +
+		"github.com/proemergotech/errors/v2.init\n" +
 			"\t.+/errors/stack_test.go:9",
 	}, {
 		0,
@@ -98,7 +98,7 @@ func TestFuncName(t *testing.T) {
 	}{
 		{"", ""},
 		{"runtime.main", "main"},
-		{"github.com/proemergotech/errors.funcName", "funcName"},
+		{"github.com/proemergotech/errors/v2.funcName", "funcName"},
 		{"funcName", "funcName"},
 		{"io.copyBuffer", "copyBuffer"},
 		{"main.(*R).Write", "(*R).Write"},
@@ -119,24 +119,24 @@ func TestStackTrace(t *testing.T) {
 		want []string
 	}{{
 		New("ooh"), []string{
-			"github.com/proemergotech/errors.TestStackTrace\n" +
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
 				"\t.+/errors/stack_test.go:121",
 		},
 	}, {
 		Wrap(New("ooh"), "ahh"), []string{
-			"github.com/proemergotech/errors.TestStackTrace\n" +
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
 				"\t.+/errors/stack_test.go:126", // this is the stack of Wrap, not New
 		},
 	}, {
 		Cause(Wrap(New("ooh"), "ahh")), []string{
-			"github.com/proemergotech/errors.TestStackTrace\n" +
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
 				"\t.+/errors/stack_test.go:131", // this is the stack of New
 		},
 	}, {
 		func() error { return New("ooh") }(), []string{
-			`github.com/proemergotech/errors.TestStackTrace.func1` +
+			`github.com/proemergotech/errors/v2.TestStackTrace.func1` +
 				"\n\t.+/errors/stack_test.go:136", // this is the stack of New
-			"github.com/proemergotech/errors.TestStackTrace\n" +
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
 				"\t.+/errors/stack_test.go:136", // this is the stack of New's caller
 		},
 	}, {
@@ -145,11 +145,11 @@ func TestStackTrace(t *testing.T) {
 				return Errorf("hello %s", fmt.Sprintf("world: %s", "ooh"))
 			}()
 		}()), []string{
-			`github.com/proemergotech/errors.TestStackTrace.func2.1` +
+			`github.com/proemergotech/errors/v2.TestStackTrace.func2.1` +
 				"\n\t.+/errors/stack_test.go:145", // this is the stack of Errorf
-			`github.com/proemergotech/errors.TestStackTrace.func2` +
+			`github.com/proemergotech/errors/v2.TestStackTrace.func2` +
 				"\n\t.+/errors/stack_test.go:146", // this is the stack of Errorf's caller
-			"github.com/proemergotech/errors.TestStackTrace\n" +
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
 				"\t.+/errors/stack_test.go:147", // this is the stack of Errorf's caller's caller
 		},
 	}}
@@ -225,9 +225,9 @@ func TestStackTraceFormat(t *testing.T) {
 		stackTrace()[:2],
 		"%+v",
 		"\n" +
-			"github.com/proemergotech/errors.stackTrace\n" +
+			"github.com/proemergotech/errors/v2.stackTrace\n" +
 			"\t.+/errors/stack_test.go:174\n" +
-			"github.com/proemergotech/errors.TestStackTraceFormat\n" +
+			"github.com/proemergotech/errors/v2.TestStackTraceFormat\n" +
 			"\t.+/errors/stack_test.go:225",
 	}, {
 		stackTrace()[:2],

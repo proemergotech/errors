@@ -25,3 +25,16 @@ jobs:
       - uses: actions/checkout@v2
         
       - run: go build -a -mod=readonly -o /dev/null ./...
+        
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    container: golang:1.17
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.44.2
+          args: -c .golangci.yml

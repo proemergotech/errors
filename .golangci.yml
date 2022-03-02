@@ -23,7 +23,7 @@ linters:
     - exportloopref
     - goconst
     - goimports
-    - golint
+    - revive
     - gosec
     - govet
     - ineffassign

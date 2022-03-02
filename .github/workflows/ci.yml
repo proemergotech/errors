@@ -1,0 +1,27 @@
+name: CI
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: golang:1.17
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: go test -mod=readonly -race -v ./...
+
+  verify:
+    if: github.ref_name != 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        
+      - run: ./verify.sh
+          
+  build:
+    runs-on: ubuntu-latest
+    container: golang:1.17
+    steps:
+      - uses: actions/checkout@v2
+        
+      - run: go build -a -mod=readonly -o /dev/null ./...

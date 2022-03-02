@@ -64,9 +64,9 @@ func HTTPCode(err error) int {
 	field := Field(err, ErrHTTPCode)
 	if field == nil {
 		return 0
+	} else {
+		return field.(int)
 	}
-
-	return field.(int)
 }
 
 func Details(err error) []map[string]interface{} {

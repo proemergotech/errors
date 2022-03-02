@@ -26,8 +26,8 @@ func TestFormatNew(t *testing.T) {
 		New("error"),
 		"%+v",
 		"error\n" +
-			"gitlab.com/proemergotech/errors.TestFormatNew\n" +
-			"\t.+/proemergotech/errors/format_test.go:26",
+			"github.com/proemergotech/errors/v2.TestFormatNew\n" +
+			"\t.+/errors/format_test.go:26",
 	}, {
 		New("error"),
 		"%q",
@@ -56,8 +56,8 @@ func TestFormatErrorf(t *testing.T) {
 		Errorf("%s", "error"),
 		"%+v",
 		"error\n" +
-			"gitlab.com/proemergotech/errors.TestFormatErrorf\n" +
-			"\t.+/proemergotech/errors/format_test.go:56",
+			"github.com/proemergotech/errors/v2.TestFormatErrorf\n" +
+			"\t.+/errors/format_test.go:56",
 	}}
 
 	for i, tt := range tests {
@@ -82,8 +82,8 @@ func TestFormatWrap(t *testing.T) {
 		Wrap(New("error"), "error2"),
 		"%+v",
 		"error\n" +
-			"gitlab.com/proemergotech/errors.TestFormatWrap\n" +
-			"\t.+/proemergotech/errors/format_test.go:82",
+			"github.com/proemergotech/errors/v2.TestFormatWrap\n" +
+			"\t.+/errors/format_test.go:82",
 	}, {
 		Wrap(io.EOF, "error"),
 		"%s",
@@ -97,15 +97,15 @@ func TestFormatWrap(t *testing.T) {
 		"%+v",
 		"EOF\n" +
 			"error\n" +
-			"gitlab.com/proemergotech/errors.TestFormatWrap\n" +
-			"\t.+/proemergotech/errors/format_test.go:96",
+			"github.com/proemergotech/errors/v2.TestFormatWrap\n" +
+			"\t.+/errors/format_test.go:96",
 	}, {
 		Wrap(Wrap(io.EOF, "error1"), "error2"),
 		"%+v",
 		"EOF\n" +
 			"error1\n" +
-			"gitlab.com/proemergotech/errors.TestFormatWrap\n" +
-			"\t.+/proemergotech/errors/format_test.go:103\n",
+			"github.com/proemergotech/errors/v2.TestFormatWrap\n" +
+			"\t.+/errors/format_test.go:103\n",
 	}, {
 		Wrap(New("error with space"), "context"),
 		"%q",
@@ -135,8 +135,8 @@ func TestFormatWrapf(t *testing.T) {
 		"%+v",
 		"EOF\n" +
 			"error2\n" +
-			"gitlab.com/proemergotech/errors.TestFormatWrapf\n" +
-			"\t.+/proemergotech/errors/format_test.go:134",
+			"github.com/proemergotech/errors/v2.TestFormatWrapf\n" +
+			"\t.+/errors/format_test.go:134",
 	}, {
 		Wrapf(New("error"), "error%d", 2),
 		"%s",
@@ -149,8 +149,8 @@ func TestFormatWrapf(t *testing.T) {
 		Wrapf(New("error"), "error%d", 2),
 		"%+v",
 		"error\n" +
-			"gitlab.com/proemergotech/errors.TestFormatWrapf\n" +
-			"\t.+/proemergotech/errors/format_test.go:149",
+			"github.com/proemergotech/errors/v2.TestFormatWrapf\n" +
+			"\t.+/errors/format_test.go:149",
 	}}
 
 	for i, tt := range tests {
@@ -175,8 +175,8 @@ func TestFormatWithStack(t *testing.T) {
 		WithStack(io.EOF),
 		"%+v",
 		[]string{"EOF",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:175"},
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:175"},
 	}, {
 		WithStack(New("error")),
 		"%s",
@@ -189,37 +189,37 @@ func TestFormatWithStack(t *testing.T) {
 		WithStack(New("error")),
 		"%+v",
 		[]string{"error",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:189",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:189"},
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:189",
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:189"},
 	}, {
 		WithStack(WithStack(io.EOF)),
 		"%+v",
 		[]string{"EOF",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:197",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:197"},
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:197",
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:197"},
 	}, {
 		WithStack(WithStack(Wrapf(io.EOF, "message"))),
 		"%+v",
 		[]string{"EOF",
 			"message",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:205",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:205",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:205"},
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:205",
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:205",
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:205"},
 	}, {
 		WithStack(Errorf("error%d", 1)),
 		"%+v",
 		[]string{"error1",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:216",
-			"gitlab.com/proemergotech/errors.TestFormatWithStack\n" +
-				"\t.+/proemergotech/errors/format_test.go:216"},
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:216",
+			"github.com/proemergotech/errors/v2.TestFormatWithStack\n" +
+				"\t.+/errors/format_test.go:216"},
 	}}
 
 	for i, tt := range tests {
@@ -245,8 +245,8 @@ func TestFormatWithMessage(t *testing.T) {
 		"%+v",
 		[]string{
 			"error",
-			"gitlab.com/proemergotech/errors.TestFormatWithMessage\n" +
-				"\t.+/proemergotech/errors/format_test.go:244",
+			"github.com/proemergotech/errors/v2.TestFormatWithMessage\n" +
+				"\t.+/errors/format_test.go:244",
 			"error2"},
 	}, {
 		WithMessage(io.EOF, "addition1"),
@@ -272,33 +272,33 @@ func TestFormatWithMessage(t *testing.T) {
 		Wrap(WithMessage(io.EOF, "error1"), "error2"),
 		"%+v",
 		[]string{"EOF", "error1", "error2",
-			"gitlab.com/proemergotech/errors.TestFormatWithMessage\n" +
-				"\t.+/proemergotech/errors/format_test.go:272"},
+			"github.com/proemergotech/errors/v2.TestFormatWithMessage\n" +
+				"\t.+/errors/format_test.go:272"},
 	}, {
 		WithMessage(Errorf("error%d", 1), "error2"),
 		"%+v",
 		[]string{"error1",
-			"gitlab.com/proemergotech/errors.TestFormatWithMessage\n" +
-				"\t.+/proemergotech/errors/format_test.go:278",
+			"github.com/proemergotech/errors/v2.TestFormatWithMessage\n" +
+				"\t.+/errors/format_test.go:278",
 			"error2"},
 	}, {
 		WithMessage(WithStack(io.EOF), "error"),
 		"%+v",
 		[]string{
 			"EOF",
-			"gitlab.com/proemergotech/errors.TestFormatWithMessage\n" +
-				"\t.+/proemergotech/errors/format_test.go:285",
+			"github.com/proemergotech/errors/v2.TestFormatWithMessage\n" +
+				"\t.+/errors/format_test.go:285",
 			"error"},
 	}, {
 		WithMessage(Wrap(WithStack(io.EOF), "inside-error"), "outside-error"),
 		"%+v",
 		[]string{
 			"EOF",
-			"gitlab.com/proemergotech/errors.TestFormatWithMessage\n" +
-				"\t.+/proemergotech/errors/format_test.go:293",
+			"github.com/proemergotech/errors/v2.TestFormatWithMessage\n" +
+				"\t.+/errors/format_test.go:293",
 			"inside-error",
-			"gitlab.com/proemergotech/errors.TestFormatWithMessage\n" +
-				"\t.+/proemergotech/errors/format_test.go:293",
+			"github.com/proemergotech/errors/v2.TestFormatWithMessage\n" +
+				"\t.+/errors/format_test.go:293",
 			"outside-error"},
 	}}
 
@@ -314,12 +314,12 @@ func TestFormatGeneric(t *testing.T) {
 	}{
 		{New("new-error"), []string{
 			"new-error",
-			"gitlab.com/proemergotech/errors.TestFormatGeneric\n" +
-				"\t.+/proemergotech/errors/format_test.go:315"},
+			"github.com/proemergotech/errors/v2.TestFormatGeneric\n" +
+				"\t.+/errors/format_test.go:315"},
 		}, {Errorf("errorf-error"), []string{
 			"errorf-error",
-			"gitlab.com/proemergotech/errors.TestFormatGeneric\n" +
-				"\t.+/proemergotech/errors/format_test.go:319"},
+			"github.com/proemergotech/errors/v2.TestFormatGeneric\n" +
+				"\t.+/errors/format_test.go:319"},
 		}, {stderrors.New("errors-new-error"), []string{
 			"errors-new-error"},
 		},
@@ -332,22 +332,22 @@ func TestFormatGeneric(t *testing.T) {
 		}, {
 			func(err error) error { return WithStack(err) },
 			[]string{
-				"gitlab.com/proemergotech/errors.(func·002|TestFormatGeneric.func2)\n\t" +
-					".+/proemergotech/errors/format_test.go:333",
+				"github.com/proemergotech/errors/v2.(func·002|TestFormatGeneric.func2)\n\t" +
+					".+/errors/format_test.go:333",
 			},
 		}, {
 			func(err error) error { return Wrap(err, "wrap-error") },
 			[]string{
 				"wrap-error",
-				"gitlab.com/proemergotech/errors.(func·003|TestFormatGeneric.func3)\n\t" +
-					".+/proemergotech/errors/format_test.go:339",
+				"github.com/proemergotech/errors/v2.(func·003|TestFormatGeneric.func3)\n\t" +
+					".+/errors/format_test.go:339",
 			},
 		}, {
 			func(err error) error { return Wrapf(err, "wrapf-error%d", 1) },
 			[]string{
 				"wrapf-error1",
-				"gitlab.com/proemergotech/errors.(func·004|TestFormatGeneric.func4)\n\t" +
-					".+/proemergotech/errors/format_test.go:346",
+				"github.com/proemergotech/errors/v2.(func·004|TestFormatGeneric.func4)\n\t" +
+					".+/errors/format_test.go:346",
 			},
 		},
 	}
@@ -373,10 +373,10 @@ func TestFormatWrappedNew(t *testing.T) {
 		wrappedNew("error"),
 		"%+v",
 		"error\n" +
-			"gitlab.com/proemergotech/errors.wrappedNew\n" +
-			"\t.+/proemergotech/errors/format_test.go:364\n" +
-			"gitlab.com/proemergotech/errors.TestFormatWrappedNew\n" +
-			"\t.+/proemergotech/errors/format_test.go:373",
+			"github.com/proemergotech/errors/v2.wrappedNew\n" +
+			"\t.+/errors/format_test.go:364\n" +
+			"github.com/proemergotech/errors/v2.TestFormatWrappedNew\n" +
+			"\t.+/errors/format_test.go:373",
 	}}
 
 	for i, tt := range tests {

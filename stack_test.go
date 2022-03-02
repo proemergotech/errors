@@ -32,8 +32,8 @@ func TestFrameFormat(t *testing.T) {
 	}, {
 		initpc,
 		"%+s",
-		"gitlab.com/proemergotech/errors.init\n" +
-			"\t.+/proemergotech/errors/stack_test.go",
+		"github.com/proemergotech/errors/v2.init\n" +
+			"\t.+/errors/stack_test.go",
 	}, {
 		0,
 		"%s",
@@ -79,8 +79,8 @@ func TestFrameFormat(t *testing.T) {
 	}, {
 		initpc,
 		"%+v",
-		"gitlab.com/proemergotech/errors.init\n" +
-			"\t.+/proemergotech/errors/stack_test.go:9",
+		"github.com/proemergotech/errors/v2.init\n" +
+			"\t.+/errors/stack_test.go:9",
 	}, {
 		0,
 		"%v",
@@ -98,7 +98,7 @@ func TestFuncName(t *testing.T) {
 	}{
 		{"", ""},
 		{"runtime.main", "main"},
-		{"gitlab.com/proemergotech/errors.funcName", "funcName"},
+		{"github.com/proemergotech/errors/v2.funcName", "funcName"},
 		{"funcName", "funcName"},
 		{"io.copyBuffer", "copyBuffer"},
 		{"main.(*R).Write", "(*R).Write"},
@@ -119,25 +119,25 @@ func TestStackTrace(t *testing.T) {
 		want []string
 	}{{
 		New("ooh"), []string{
-			"gitlab.com/proemergotech/errors.TestStackTrace\n" +
-				"\t.+/proemergotech/errors/stack_test.go:121",
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
+				"\t.+/errors/stack_test.go:121",
 		},
 	}, {
 		Wrap(New("ooh"), "ahh"), []string{
-			"gitlab.com/proemergotech/errors.TestStackTrace\n" +
-				"\t.+/proemergotech/errors/stack_test.go:126", // this is the stack of Wrap, not New
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
+				"\t.+/errors/stack_test.go:126", // this is the stack of Wrap, not New
 		},
 	}, {
 		Cause(Wrap(New("ooh"), "ahh")), []string{
-			"gitlab.com/proemergotech/errors.TestStackTrace\n" +
-				"\t.+/proemergotech/errors/stack_test.go:131", // this is the stack of New
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
+				"\t.+/errors/stack_test.go:131", // this is the stack of New
 		},
 	}, {
 		func() error { return New("ooh") }(), []string{
-			`gitlab.com/proemergotech/errors.TestStackTrace.func1` +
-				"\n\t.+/proemergotech/errors/stack_test.go:136", // this is the stack of New
-			"gitlab.com/proemergotech/errors.TestStackTrace\n" +
-				"\t.+/proemergotech/errors/stack_test.go:136", // this is the stack of New's caller
+			`github.com/proemergotech/errors/v2.TestStackTrace.func1` +
+				"\n\t.+/errors/stack_test.go:136", // this is the stack of New
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
+				"\t.+/errors/stack_test.go:136", // this is the stack of New's caller
 		},
 	}, {
 		Cause(func() error {
@@ -145,12 +145,12 @@ func TestStackTrace(t *testing.T) {
 				return Errorf("hello %s", fmt.Sprintf("world: %s", "ooh"))
 			}()
 		}()), []string{
-			`gitlab.com/proemergotech/errors.TestStackTrace.func2.1` +
-				"\n\t.+/proemergotech/errors/stack_test.go:145", // this is the stack of Errorf
-			`gitlab.com/proemergotech/errors.TestStackTrace.func2` +
-				"\n\t.+/proemergotech/errors/stack_test.go:146", // this is the stack of Errorf's caller
-			"gitlab.com/proemergotech/errors.TestStackTrace\n" +
-				"\t.+/proemergotech/errors/stack_test.go:147", // this is the stack of Errorf's caller's caller
+			`github.com/proemergotech/errors/v2.TestStackTrace.func2.1` +
+				"\n\t.+/errors/stack_test.go:145", // this is the stack of Errorf
+			`github.com/proemergotech/errors/v2.TestStackTrace.func2` +
+				"\n\t.+/errors/stack_test.go:146", // this is the stack of Errorf's caller
+			"github.com/proemergotech/errors/v2.TestStackTrace\n" +
+				"\t.+/errors/stack_test.go:147", // this is the stack of Errorf's caller's caller
 		},
 	}}
 	for i, tt := range tests {
@@ -225,10 +225,10 @@ func TestStackTraceFormat(t *testing.T) {
 		stackTrace()[:2],
 		"%+v",
 		"\n" +
-			"gitlab.com/proemergotech/errors.stackTrace\n" +
-			"\t.+/proemergotech/errors/stack_test.go:174\n" +
-			"gitlab.com/proemergotech/errors.TestStackTraceFormat\n" +
-			"\t.+/proemergotech/errors/stack_test.go:225",
+			"github.com/proemergotech/errors/v2.stackTrace\n" +
+			"\t.+/errors/stack_test.go:174\n" +
+			"github.com/proemergotech/errors/v2.TestStackTraceFormat\n" +
+			"\t.+/errors/stack_test.go:225",
 	}, {
 		stackTrace()[:2],
 		"%#v",

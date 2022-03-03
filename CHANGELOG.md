@@ -2,7 +2,6 @@
 
 ## v2.0.0 / 2022-03-02
 - remove go 1.13 support
-- add license
 
 ## v1.1.0 / 2020-12-15
 - add schema related error helpers
